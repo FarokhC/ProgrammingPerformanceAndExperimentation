@@ -1,7 +1,6 @@
 import math
 from functools import reduce
 
-
 def getAvg(input_list: list) -> float:
     return reduce(
         (lambda x, y: x + y),
