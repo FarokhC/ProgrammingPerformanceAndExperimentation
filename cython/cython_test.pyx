@@ -4,6 +4,43 @@ import generate_numbers
 import math
 from functools import reduce
 
+cpdef cythonBinarySearch(listValues, value):
+    cdef int left = 0
+    cdef int right = len(listValues) -1
+    cdef int middle = (left + right) /2
+    value = int(value)
+    if listValues[middle] == value:
+        return middle
+
+    if listValues[middle] < value:
+        left = middle + 1
+    elif listValues[middle] > value:
+        right = middle - 1
+
+def pythonBinarySearch(listValues, value):
+    left, right = 0, len(listValues) - 1
+    middle = (left + right) / 2
+    middle = int(middle)
+    value = int(value)
+    if listValues[middle] == value:
+        return middle
+
+    if listValues[middle] < value:
+        left = middle + 1
+    elif listValues[middle] > value:
+        right = middle - 1
+
+cpdef cythonLinearSearch(listValues,value):
+    cdef int i
+    for i in range(len(listValues)):
+        if listValues[i]==value:
+            return i
+
+def pythonLinearSearch(listValues,value):
+    for i in listValues:
+        if listValues[i] == value:
+            return i
+
 cpdef cythonSort(listValues):
     cdef int i
     cdef int j
@@ -80,7 +117,7 @@ def pythonGetSTD(listValues):
 #     av = cythonGetAvg(listValues)
 #     return math.sqrt(reduce((lambda x, y: x + y), [(float(x) - av) ** 2 for x in listValues]) / (len(listValues) - 1))
 
-generate_numbers.generateRandomNumbers()
+#generate_numbers.generateRandomNumbers()
 
 #Read lines and get time
 read_lines_start_time = time.time()
@@ -92,6 +129,36 @@ read_lines_end_time = time.time()
 read_lines_time = read_lines_end_time - read_lines_start_time
 
 print("Python time to read file: " + str(read_lines_time))
+
+#Binary Search
+python_binary_search_start_time = time.time()
+val = input("Enter the number you want to find(binary search in python):")
+python_binary = pythonBinarySearch(python_numbers,val)
+python_binary_search_end_time = time.time()
+python_binary_search_time = python_binary_search_end_time - python_binary_search_start_time
+print("Python binary search time: " + str(python_binary_search_time))
+
+cython_binary_search_start_time = time.time()
+val = input("Enter the number you want to find(binary search in cython):")
+cython_binary = cythonBinarySearch(python_numbers,val)
+cython_binary_search_end_time = time.time()
+cython_binary_search_time = cython_binary_search_end_time - cython_binary_search_start_time
+print("Cython binary search time: " + str(cython_binary_search_time))
+
+#Linear Search
+python_linear_search_start_time = time.time()
+val = input("Enter the number you want to find(linear search in python):")
+python_linear = pythonLinearSearch(python_numbers,val)
+python_linear_search_end_time = time.time()
+python_linear_search_time = python_linear_search_end_time - python_linear_search_start_time
+print("Python linear search time: " + str(python_linear_search_time))
+
+cython_linear_search_start_time = time.time()
+val = input("Enter the number you want to find(linear search in cython):")
+cython_linear = cythonLinearSearch(python_numbers,val)
+cython_linear_search_end_time = time.time()
+cython_linear_search_time = cython_linear_search_end_time - cython_linear_search_start_time
+print("Cython linear search time: " + str(cython_linear_search_time))
 
 #Compute time to get average
 python_avg_start_time = time.time()
