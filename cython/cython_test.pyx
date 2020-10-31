@@ -41,6 +41,33 @@ def pythonLinearSearch(listValues,value):
         if listValues[i] == value:
             return i
 
+def pythonSelectionSort(listValues):
+    for i in range(len(listValues)):
+        minIdx = i
+        for j in range(i+1, len(listValues)):
+            if listValues[minIdx] > listValues[j]:
+                minIdx = j
+        
+        listValues[i], listValues[minIdx] = listValues[minIdx], listValues[i]
+    return listValues
+
+cpdef cythonSelectionSort(listValues):
+    cdef int i
+    cdef int j
+    cdef int length
+    
+    length = len(listValues)
+
+    for i in range(len(listValues)):
+        minIdx = i
+        for j in range(i+1, len(listValues)):
+            if listValues[minIdx] > listValues[j]:
+                minIdx = j
+        
+        listValues[i], listValues[minIdx] = listValues[minIdx], listValues[i]
+    return listValues
+
+
 cpdef cythonSort(listValues):
     cdef int i
     cdef int j
@@ -213,6 +240,20 @@ python_sorted_time = python_sorted_end_time - python_sorted_start_time
 
 print("Python sort run time: " + str(python_sorted_time))
 
+
+#Cython SelectionSort values
+cython_sorted_start_time = time.time()
+cython_sortedNumbers = cythonSelectionSort(cython_numbers)
+cython_sorted_end_time = time.time()
+cython_sorted_time = cython_sorted_end_time - cython_sorted_start_time
+print("Cython Selection sort run time: " + str(cython_sorted_time))
+
+python_sorted_start_time = time.time()
+python_sortedNumbers = pythonSelectionSort(python_numbers)
+python_sorted_end_time = time.time()
+python_sorted_time = python_sorted_end_time - python_sorted_start_time
+
+print("Python Selection sort run time: " + str(python_sorted_time))
 #Print results
 # print("Python computational average: " + str(python_avg))
 # print("Python computaitonal standard deviation: " + str(python_std))
