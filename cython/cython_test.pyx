@@ -4,42 +4,44 @@ import generate_numbers
 import math
 from functools import reduce
 
-cpdef cythonBinarySearch(listValues, value):
-    cdef int left = 0
-    cdef int right = len(listValues) -1
-    cdef int middle = (left + right) /2
-    value = int(value)
-    if listValues[middle] == value:
-        return middle
+cpdef cythonBinarySearch(listValues,left,right, value):
+    listValues = cythonSelectionSort(listValues)
+    if right >= left:
+        middle = (left + right) // 2
+        if listValues[middle] == value: 
+            return middle 
+        elif listValues[middle] > value: 
+            return cythonBinarySearch(listValues, left, middle-1, value) 
+        elif listValues[middle] < value:  
+            return cythonBinarySearch(listValues, middle + 1, right, value) 
+    else:
+        return -1
 
-    if listValues[middle] < value:
-        left = middle + 1
-    elif listValues[middle] > value:
-        right = middle - 1
-
-def pythonBinarySearch(listValues, value):
-    left, right = 0, len(listValues) - 1
-    middle = (left + right) / 2
-    middle = int(middle)
-    value = int(value)
-    if listValues[middle] == value:
-        return middle
-
-    if listValues[middle] < value:
-        left = middle + 1
-    elif listValues[middle] > value:
-        right = middle - 1
+def pythonBinarySearch(listValues,left,right, value):
+    listValues = pythonSelectionSort(listValues)
+    if right >= left:
+        middle = (left + right) // 2
+        if listValues[middle] == value: 
+            return middle 
+        elif listValues[middle] > value: 
+            print(listValues[middle],left, middle, right)
+            return pythonBinarySearch(listValues, left, middle-1, value) 
+        elif listValues[middle] < value:  
+            print(listValues[middle],left, middle, right)
+            return pythonBinarySearch(listValues, middle + 1, right, value) 
+    else:
+        return -1
 
 cpdef cythonLinearSearch(listValues,value):
     cdef int i
-    for i in range(len(listValues)):
+    for i in listValues:
         if listValues[i]==value:
-            return i
+            return i+1
 
 def pythonLinearSearch(listValues,value):
     for i in listValues:
         if listValues[i] == value:
-            return i
+            return i+1
 
 def pythonSelectionSort(listValues):
     for i in range(len(listValues)):
@@ -158,34 +160,40 @@ read_lines_time = read_lines_end_time - read_lines_start_time
 print("Python time to read file: " + str(read_lines_time))
 
 #Binary Search
+val = int(input("Enter the number you want to find(binary search in python):"))
 python_binary_search_start_time = time.time()
-val = input("Enter the number you want to find(binary search in python):")
-python_binary = pythonBinarySearch(python_numbers,val)
+python_binary = pythonBinarySearch(python_numbers,0,len(python_numbers)-1,val)
 python_binary_search_end_time = time.time()
 python_binary_search_time = python_binary_search_end_time - python_binary_search_start_time
 print("Python binary search time: " + str(python_binary_search_time))
+print("The value is at position "+ str(python_binary))
 
+
+val = int(input("Enter the number you want to find(binary search in cython):"))
 cython_binary_search_start_time = time.time()
-val = input("Enter the number you want to find(binary search in cython):")
-cython_binary = cythonBinarySearch(python_numbers,val)
+cython_binary = cythonBinarySearch(python_numbers,0,len(python_numbers)-1,val)
 cython_binary_search_end_time = time.time()
 cython_binary_search_time = cython_binary_search_end_time - cython_binary_search_start_time
 print("Cython binary search time: " + str(cython_binary_search_time))
+print("The value is at position "+ str(cython_binary))
 
 #Linear Search
+val = int(input("Enter the number you want to find(linear search in python):"))
 python_linear_search_start_time = time.time()
-val = input("Enter the number you want to find(linear search in python):")
 python_linear = pythonLinearSearch(python_numbers,val)
 python_linear_search_end_time = time.time()
 python_linear_search_time = python_linear_search_end_time - python_linear_search_start_time
 print("Python linear search time: " + str(python_linear_search_time))
+print("The value is at position "+ str(python_linear))
 
+
+val = int(input("Enter the number you want to find(linear search in cython):"))
 cython_linear_search_start_time = time.time()
-val = input("Enter the number you want to find(linear search in cython):")
 cython_linear = cythonLinearSearch(python_numbers,val)
 cython_linear_search_end_time = time.time()
 cython_linear_search_time = cython_linear_search_end_time - cython_linear_search_start_time
 print("Cython linear search time: " + str(cython_linear_search_time))
+print("The value is at position "+ str(cython_linear))
 
 #Compute time to get average
 python_avg_start_time = time.time()
