@@ -160,13 +160,13 @@ read_lines_time = read_lines_end_time - read_lines_start_time
 print("Python time to read file: " + str(read_lines_time))
 
 #Binary Search
-#val = int(input("Enter the number you want to find(binary search in python):"))
-#python_binary_search_start_time = time.time()
-#python_binary = pythonBinarySearch(python_numbers,0,len(python_numbers)-1,val)
-#python_binary_search_end_time = time.time()
-#python_binary_search_time = python_binary_search_end_time - python_binary_search_start_time
-#print("Python binary search time: " + str(python_binary_search_time))
-#print("The value is at position "+ str(python_binary))
+val = int(input("Enter the number you want to find(binary search in python):"))
+python_binary_search_start_time = time.time()
+python_binary = pythonBinarySearch(python_numbers,0,len(python_numbers)-1,val)
+python_binary_search_end_time = time.time()
+python_binary_search_time = python_binary_search_end_time - python_binary_search_start_time
+print("Python binary search time: " + str(python_binary_search_time))
+print("The value is at position "+ str(python_binary))
 
 
 val = int(input("Enter the number you want to find(binary search in cython):"))
